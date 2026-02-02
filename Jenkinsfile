@@ -1,29 +1,23 @@
-pipeline{
+pipeline {
 	agent none 
-
-	triggers{
+	triggers {
 		githubPush()
 	}
-
-	stages{
-
-		stage('get code') {
+	stages {
+		stage('copying git repo ') {
 			agent any 
 			steps {
-				git branch: 'develop'
-				url: https://github.com/p-shashidhar-gowda/Jenkins-practice.git
+				git branch : 'develop' , url : 'https://github.com/p-shashidhar-gowda/Jenkins-practice.git'
 			}
 		}
-
-		stage('deploy to test'){
+		stage('pushing to test') {
 			agent {label 'test'}
 			steps {
 				sh 'mkdir -p ~/test-app'
 				sh 'cp -r * ~/test-app'
 			}
 		}
-
-		stage('deploy to prod') {
+		stage('pushing to prod') {
 			agent {label 'prod'}
 			steps {
 				sh 'mkdir -p ~/prod-app'
